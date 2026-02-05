@@ -1,0 +1,93 @@
+/* Modern footer styles for the admin layout
+.app-footer {
+  background: linear-gradient(90deg, #172032 0%, #1f2d3d 50%, #263a4f 100%);
+  color: #cbd5e1;
+  padding: 16px 24px;
+  box-shadow: 0 -1px 8px rgba(18, 27, 36, 0.12);
+  font-size: 0.95rem;
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: 1180px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.footer-left {
+  display: flex;
+  flex-direction: column;
+}
+.footer-brand {
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.2px;
+}
+.brand-highlight {
+  color: #f6c84c;
+}
+.footer-copy {
+  color: rgba(255,255,255,0.65);
+  font-size: 0.88rem;
+  margin-top: 4px;
+}
+
+.footer-center {
+  display: flex;
+  gap: 12px;
+}
+.footer-link {
+  color: rgba(255,255,255,0.82);
+  text-decoration: none;
+  padding: 6px 8px;
+  border-radius: 6px;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+.footer-link:hover,
+.footer-link:focus {
+  background: rgba(255,255,255,0.04);
+  color: #ffffff;
+  outline: none;
+}
+
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.footer-version {
+  color: rgba(255,255,255,0.55);
+  font-size: 0.86rem;
+}
+.footer-social {
+  display: flex;
+  gap: 8px;
+}
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 6px;
+  color: #cbd5e1;
+  background: transparent;
+  text-decoration: none;
+  transition: transform 120ms ease, background-color 120ms ease;
+}
+.social-link svg { display:block; }
+.social-link:hover,
+.social-link:focus { transform: translateY(-3px); color: #ffffff; background: rgba(255,255,255,0.03); } */
+
+/* Responsive: stack footer sections on small screens */
+/* @media (max-width: 720px) {
+  .footer-inner { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .footer-center { order: 3; width: 100%; justify-content: flex-start; flex-wrap: wrap; }
+  .footer-right { order: 2; }
+} */
+
+/* Accessibility: visible focus */
+/* .footer-link:focus, .social-link:focus { box-shadow: 0 0 0 3px rgba(246,200,76,0.12); } */

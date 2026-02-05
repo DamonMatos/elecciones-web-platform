@@ -1,0 +1,52 @@
+<section class="vh-100 d-flex align-items-center justify-content-center bg-light">
+    <div class="card shadow-lg p-4" style="width: 420px;">
+        <h3 class="text-center mb-4">Crear Cuenta</h3>
+
+        <form>
+        <div class="mb-3">
+            <label class="form-label">Nombre completo</label>
+            <input
+            type="text"
+            class="form-control"
+            placeholder="Juan Pérez"
+            />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Correo electrónico</label>
+            <input
+            type="email"
+            class="form-control"
+            placeholder="usuario@email.com"
+            />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Contraseña</label>
+            <input
+            type="password"
+            class="form-control"
+            />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Confirmar contraseña</label>
+            <input
+            type="password"
+            class="form-control"
+            />
+        </div>
+
+        <div class="d-grid">
+            <button class="btn btn-success">Registrarse</button>
+        </div>
+
+        <div class="text-center mt-3">
+            <small>
+            ¿Ya tienes cuenta?
+            <a (click)="volver()" class="text-decoration-none cursor">Inicia sesión</a>
+            </small>
+        </div>
+        </form>
+    </div>
+</section>
