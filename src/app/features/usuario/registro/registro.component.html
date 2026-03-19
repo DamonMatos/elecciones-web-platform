@@ -1,52 +1,58 @@
-<section class="vh-100 d-flex align-items-center justify-content-center bg-light">
-    <div class="card shadow-lg p-4" style="width: 420px;">
-        <h3 class="text-center mb-4">Crear Cuenta</h3>
+<section class="auth-page">
+    <div class="auth-container">
+        <div class="auth-card card shadow-lg p-4">
+            <h3 class="text-center mb-4">Crear Cuenta</h3>
+            <form [formGroup]="fb" (ngSubmit)="save()" autocomplete="off">
+                        <div class="mb-3">
+                            <label class="form-label">Correo electrónico</label>
+                            <input
+                            type="email"
+                            class="form-control"
+                            placeholder="usuario@email.com"
+                            formControlName="correo"
+                            />
+                        </div>
 
-        <form>
-        <div class="mb-3">
-            <label class="form-label">Nombre completo</label>
-            <input
-            type="text"
-            class="form-control"
-            placeholder="Juan Pérez"
-            />
-        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Contraseña</label>
+                            <input
+                            type="password"
+                            class="form-control"
+                            formControlName="clave"
+                            />
+                        </div>
 
-        <div class="mb-3">
-            <label class="form-label">Correo electrónico</label>
-            <input
-            type="email"
-            class="form-control"
-            placeholder="usuario@email.com"
-            />
-        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Confirmar contraseña</label>
+                            <input
+                            type="password"
+                            class="form-control"
+                            formControlName="confirmarclave"
+                            />
+                        </div>
 
-        <div class="mb-3">
-            <label class="form-label">Contraseña</label>
-            <input
-            type="password"
-            class="form-control"
-            />
-        </div>
+                        <div class="d-grid">
+                            <button class="btn btn-success">Registrarse</button>
+                        </div>
 
-        <div class="mb-3">
-            <label class="form-label">Confirmar contraseña</label>
-            <input
-            type="password"
-            class="form-control"
-            />
-        </div>
+                        <div class="text-center mt-3">
+                            <small>
+                            ¿Ya tienes cuenta?
+                            <a (click)="goBack()" class="text-decoration-none cursor">Inicia sesión</a>
+                            </small>
+                        </div>
 
-        <div class="d-grid">
-            <button class="btn btn-success">Registrarse</button>
+                        <br>
+                        @if(errors.length > 0){
+                            <div class="alert alert-danger">
+                                <ul class="mb-0">
+                                    @for (item of errors; track $index) {
+                                        <li>{{item}}</li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+            </form>
         </div>
-
-        <div class="text-center mt-3">
-            <small>
-            ¿Ya tienes cuenta?
-            <a (click)="volver()" class="text-decoration-none cursor">Inicia sesión</a>
-            </small>
-        </div>
-        </form>
     </div>
 </section>

@@ -1,0 +1,72 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h2>MI PERFIL</h2> 
+                <div class="form-group row">               
+                    <form class="row g-3" [formGroup]="fb" (ngSubmit)="onSubmit()">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Nombre</label>
+                                <input type="text" class="form-control" formControlName="nombre">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Apellido Paterno</label>
+                                <input type="text" class="form-control" formControlName="apellidoPaterno">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Apellido Materno</label>
+                                <input type="text" class="form-control" formControlName="apellidoMaterno">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Fecha Nacimiento</label>
+                                <input type="date" class="form-control" formControlName="fechaNacimiento">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Tipo Documento</label>
+                                <select class="form-select" formControlName="tipoDocumento">
+                                <option value="">Seleccione</option>
+                                <option value="DNI">DNI</option>
+                                <option value="CE">CE</option>
+                                <option value="PAS">Pasaporte</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Número Documento</label>
+                                <input type="text" class="form-control" formControlName="numeroDocumento">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Nombre Cliente</label>
+                                <input type="text" class="form-control" formControlName="nombreCliente">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Razón Social</label>
+                                <input type="text" class="form-control" formControlName="razonSocial">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">RUC</label>
+                                <input type="text" class="form-control" formControlName="ruc">
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Foto</label>
+                                <input type="file" class="form-control" (change)="onFileChange($event.target.files)">
+                            </div> 
+
+                        </div>
+
+                            <button class="btn btn-success" type="submit">Guardar</button>
+                        </form>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div>

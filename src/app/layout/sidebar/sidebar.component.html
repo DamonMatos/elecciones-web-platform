@@ -8,53 +8,57 @@
         <nav class="sidebar-nav">
             <ul id="sidebarnav">
                 <li class="user-profile">
-                    <a class="has-arrow waves-effect waves-dark" aria-expanded="false">
+                    <a class="has-arrow waves-effect waves-dark"
+                        (click)="toggleUser()">
                         <img [src]="_Foto" alt="user" class="avatar"/>
-                        <span class="hide-menu">{{_NombreUsuario}} </span>                        
+                        <span class="hide-menu">{{ _NombreUsuario }}</span>
                     </a>
-                    <ul aria-expanded="false" class="collapse">
-                        <li><a href="javascript:void()">Mi Perfil </a></li>                   
-                        <li><a href="javascript:void()">Cerrar Sesion</a></li>
+
+                    <ul [class.collapse]="!userExpanded()"
+                        [class.in]="userExpanded()">
+                        <li class="cursor"><a (click)="miperfil()">
+                            <i class="ti-user"></i> Mi Perfil</a>
+                        </li>
+                        <li class="cursor"><a (click)="cerrarSesion()">
+                            <i class="ti-power-off"></i> Cerrar Sesión</a>
+                        </li>
                     </ul>
+
                 </li>
                 <li class="nav-devider"></li>
                 <li class="nav-small-cap">ELECCIONES WEB</li>
 
-                <li>
-                    <a class="has-arrow waves-effect waves-dark" aria-expanded="false" routerLink="/admin/dashboard">
-                            <i class="mdi mdi-gauge"></i>  
-                            <span class="hide-menu">DashBaord                            
+                @for (item of _ListMenu; track $index) {
+                    <li [class.active]="isMenuActive(item.idMenu)">
+                        <a class="has-arrow waves-effect waves-dark" (click)="toggle(item.idMenu)">
+                            <i [class]="item.icono || 'mdi mdi-gauge'"></i>
+                            <span class="hide-menu">
+                                {{ item.menu }}
+                                @if (item.cantidad > 0) {
+                                    <span class="label label-rouded label-themecolor pull-right">
+                                        {{ item.cantidad }}
+                                    </span>
+                                }
                             </span>
-                    </a>
+                        </a>
 
-                    <a class="has-arrow waves-effect waves-dark" aria-expanded="false" routerLink="/eleccion/elecciones">
-                        <i class="mdi mdi-gauge"></i>  
-                        <span class="hide-menu">Elecciones                        
-                        </span>
-                    </a>
-
+                        <ul [class.collapse]="!isMenuActive(item.idMenu)"
+                            [class.in]="isMenuActive(item.idMenu)">
+                            @for (sub of getSubMenus(item.idMenu); track sub.idSubMenu) {
+                                <li>
+                                    <a [routerLink]="sub.nomUrl"
+                                        routerLinkActive="active">
+                                        <i [class]="sub.icono || 'mdi mdi-gauge'"></i>
+                                        {{ sub.nomVista }}
+                                    </a>
+                                </li>
+                            }
+                        </ul>
                 </li>
-                    
-
-                <!--<li *ngFor="let item of _ListMenu"> 
-                    <a class="has-arrow waves-effect waves-dark" aria-expanded="false">
-                        <i class="mdi mdi-gauge"></i>  
-                        <span class="hide-menu">{{ item.nomVista }}
-                             <span class="label label-rouded label-themecolor pull-right" *ngIf="item.cantidad > 0">  
-                                {{item.cantidad}}                              
-                            </span> 
-                        </span>
-                    </a>
-                    <ul>
-                         <li *ngFor="let sub of getSubMenu(item.idMenu)">
-                            <a [routerLink]="sub.nomUrl">{{ sub.nomVista }}</a>
-                        </li> 
-                    </ul>                    
-                </li>-->
-                
+                }
             </ul>
         </nav>
-        <!-- End Sidebar navigation -->
+    <!-- End Sidebar navigation -->
     </div>
     <!-- End Sidebar scroll-->
 </aside>
