@@ -9,7 +9,7 @@
           type="email"
           class="form-control"
           placeholder="usuario@email.com" 
-          formControlName="email"         
+          formControlName="correo"         
         />
       </div>
 
@@ -19,13 +19,14 @@
           type="password"
           class="form-control"
           placeholder="********"
-          formControlName="password"
+          formControlName="clave"
         />
       </div>
 
       <small>
           &nbsp;&nbsp; ¿Olvidastes tu contraseña?
-          <a class="text-decoration-none cursor" (click)="recuperar()">Recuperar Contraseña</a>
+          <a class="text-decoration-none cursor" 
+            (click)="send()">Recuperar Contraseña</a>
       </small>
 
       <div class="d-grid">

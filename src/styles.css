@@ -1,17 +1,20 @@
 /* styles.css */
-    html, body {
-    height: 100%;
-    }
+html, body {
+height: 100%;
+}
 
-    .page-wrapper {
-    min-height: 100vh;
-    }
+.page-wrapper {
+min-height: 100vh;
+}
 
-    .footer {
-    padding: 15px;
-    background: #fff;
-    border-top: 1px solid #e9ecef;
-    }
+.footer {
+padding: 15px;
+background: #fff;
+border-top: 1px solid #e9ecef;
+}
 
+.cursor{
+    cursor: pointer;
+}
 
 

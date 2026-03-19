@@ -190,29 +190,26 @@
                 <!-- ============================================================== -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img [src]="imagenBase64" alt="user" class="profile-pic" /> 
+                        <img [src]="_FotoPer" alt="user" class="profile-pic" /> 
                     </a>
                     <div class="dropdown-menu dropdown-menu-right animated fadeIn fast">
                         <ul class="dropdown-user">
                             <li>
                                 <div class="dw-user-box">
                                     <div class="u-img">
-                                        <img [src]="imagenBase64" alt="user" class="avatar">         
+                                        <!-- <img [src]="imagenBase64" alt="user" class="avatar">          -->
                                     </div>
                                     <div class="u-text">
                                         <h4>{{_Nombre}}</h4>
                                         <p class="text-muted">{{_Correo}}</p>
-                                        <a href="pages-profile.html" class="btn btn-rounded btn-danger btn-sm">{{_Perfil}}</a></div>
+                                        <!-- <a href="pages-profile.html" class="btn btn-rounded btn-danger btn-sm">{{_Perfil}}</a> -->
+                                    </div>
                                 </div>
                             </li>
                             <li role="separator" class="divider"></li>
-                            <li><a routerLink="perfil"><i class="ti-user"></i> Mi Perfil</a></li>
-                            <!-- <li><a href="#"><i class="ti-wallet"></i> My Balance</a></li> -->
-                            <!-- <li><a href="#"><i class="ti-email"></i> Inbox</a></li> -->
-                            <!-- <li role="separator" class="divider"></li> -->
-                            <!-- <li><a href="#"><i class="ti-settings"></i> Account Setting</a></li> -->
+                            <li class="cursor"><a (click)="miperfil()"><i class="ti-user"></i> Mi Perfil</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a (click)="cerrarSesion()" style="cursor: pointer;"><i class="fa fa-power-off"></i> Logout</a></li>
+                            <li class="cursor"><a (click)="cerrarSesion()"><i class="fa fa-power-off"></i> Logout</a></li>
                         </ul>
                     </div>
                 </li>

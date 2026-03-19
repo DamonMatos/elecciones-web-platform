@@ -1,26 +1,38 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 import { ApiService } from '../../../../core/services/api.service';
-import { map, Observable } from 'rxjs';
-import { LoginModel } from '../models/login.model';
-import { MenuModel } from '../models/menu.model';
+
+import { LoginRequest} from '../models/login.model';
 import { ApiResponse } from '../../../../core/models/common/api-response.model';
+import { UsuarioMenuResponse, UsuarioResponse } from '../../registro/models/usuario.model';
 
 @Injectable({
   providedIn: 'root',
 })
+
 export class LoginService extends ApiService{
   protected override apiSection = 'elecciones' as const;
-  protected override recurso = 'documento' as const;
+  protected override recurso = 'auth' as const;
 
-  public Ingresar(_request: LoginModel):Observable<any>
+  login(_req: LoginRequest): Observable<UsuarioMenuResponse>
   {
-    console.log(_request);
-    return this.post<LoginModel,ApiResponse<MenuModel>>(_request,'ingresar');
-    //     .pipe(
-    //       map((response:ApiResponse<MenuModel>)=>{
-    //           return response.data;
-    // }));
+      return this.post<LoginRequest,ApiResponse<UsuarioMenuResponse>>
+      (_req)
+            .pipe(
+                map((response:ApiResponse<UsuarioMenuResponse>)=>{
+                  return response.data!;
+        })
+      );
   }
+
+  send(_req:string | null):void{
+    console.log("se envio por correo");
+
+  }
+
+
 
 
 
