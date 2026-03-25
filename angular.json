@@ -27,12 +27,13 @@
               "src/assets/css/style.css",
               "src/assets/css/colors/default-dark.css"
             ],
-              "scripts": [
+              "scripts": [             
               "src/assets/plugins/jquery/jquery.min.js",
               "src/assets/plugins/bootstrap/js/popper.min.js",
               "src/assets/plugins/bootstrap/js/bootstrap.min.js",
               "src/assets/js/perfect-scrollbar.jquery.min.js",
               "src/assets/js/waves.js",
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
               "src/assets/js/sidebarmenu.js",
               "src/assets/plugins/sticky-kit-master/dist/sticky-kit.min.js",
               "src/assets/plugins/sparkline/jquery.sparkline.min.js",

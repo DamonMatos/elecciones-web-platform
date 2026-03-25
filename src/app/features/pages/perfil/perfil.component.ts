@@ -65,9 +65,9 @@ export class PerfilComponent{
     }
   }
 
-  getCliente(idcliente: number){
-    if(idcliente){
-      this.clienteService.getById(idcliente).subscribe({
+  getCliente(idPersonal: number){
+    if(idPersonal){
+      this.clienteService.getById(idPersonal).subscribe({
         next: (cliente) => {
             this.clienteresponse = cliente;
             this.fb.patchValue({
@@ -75,10 +75,17 @@ export class PerfilComponent{
               razonSocial: this.clienteresponse.razonSocial,
               ruc: this.clienteresponse.ruc.trim(),
             });
+            
+            this.authStorageService.saveCliente(cliente.idCliente);
         },
         error: (error) => {
-          console.error(error.message);
-        }
+          Swal.fire({
+              title: "Error de Proceso",
+              text: error.error.message || "Ocurrió un error al cargar el perfil",
+              icon: "error",
+              draggable: true
+            });
+      }
       });
     }   
   }

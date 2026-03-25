@@ -11,6 +11,7 @@ export class AuthStorageService {
   private readonly USER_KEY  = 'user';
   private readonly MENU_KEY  = 'menu';
   private readonly EXPIRY_KEY = 'expiry';
+  private readonly CLIENTE_KEY = 'cliente';
   
   saveSession(response: UsuarioMenuResponse): void {
     if (!response.token) return;
@@ -21,8 +22,17 @@ export class AuthStorageService {
     localStorage.setItem(this.MENU_KEY,   JSON.stringify(response.menu));
   }
 
+  saveCliente(idcliente: number): void {
+    localStorage.setItem(this.CLIENTE_KEY, idcliente.toString());
+  }
+
   getToken(): string | null { 
     return localStorage.getItem(this.TOKEN_KEY);
+  }
+
+  getCliente(): number | null { 
+    const cliente = localStorage.getItem(this.CLIENTE_KEY);
+    return cliente ? parseInt(cliente, 10) : null;
   }
 
   getUser(): UsuarioResponse | null {
@@ -54,6 +64,7 @@ export class AuthStorageService {
       localStorage.removeItem(this.USER_KEY);
       localStorage.removeItem(this.MENU_KEY);
       localStorage.removeItem(this.EXPIRY_KEY);
+      localStorage.removeItem(this.CLIENTE_KEY);
   }
 
 }

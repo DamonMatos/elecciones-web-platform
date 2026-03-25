@@ -1,0 +1,85 @@
+.gris{
+    color:#3c3c3c
+}
+
+.candidato-card {
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.candidato-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Botones flotantes */
+.acciones {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 6px;
+    opacity: 0;
+    transition: 0.3s ease;
+}
+
+.candidato-card:hover .acciones {
+    opacity: 1;
+}
+
+/* Botones redondos */
+.btn-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Hover elegante */
+.btn-icon:hover {
+    transform: scale(1.1);
+}
+
+/* ----------------Colaboradores ---------------*/
+
+/* Tabla más limpia */
+.tabla-moderna th {
+    font-size: 13px;
+    font-weight: 600;
+    color: #6c757d;
+    white-space: nowrap;
+}
+
+.tabla-moderna td {
+    padding: 12px 10px;
+    vertical-align: middle;
+}
+
+/* Inputs más elegantes */
+.tabla-moderna .form-control,
+.tabla-moderna .form-select {
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    transition: 0.2s;
+}
+
+/* Focus bonito */
+.tabla-moderna .form-control:focus,
+.tabla-moderna .form-select:focus {
+    border-color: #4e73df;
+    box-shadow: 0 0 0 0.1rem rgba(78, 115, 223, 0.2);
+}
+
+/* Hover fila */
+.tabla-moderna tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Badge moderno */
+.badge {
+    font-size: 12px;
+}

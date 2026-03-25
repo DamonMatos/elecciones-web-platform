@@ -43,13 +43,13 @@ export const routes: Routes = [
                 path: 'proceso',
                 canActivate: [authGuard],
                 loadComponent: () =>
-                import('./features/pages/dashboard/dashboard.component').then(m => m.DashboardComponent)
-            },
-            {
-                path: 'candidato',
-                loadComponent: () =>
                 import('./features/pages/eleccion/eleccion.component').then(m => m.EleccionComponent)
-            }
+            },
+            // {
+            //     path: 'candidato',
+            //     loadComponent: () =>
+            //     import('./features/pages/eleccion/eleccion.component').then(m => m.EleccionComponent)
+            // }
         ]
     },
 
@@ -61,7 +61,7 @@ export const routes: Routes = [
                 path: 'barra',
                 canActivate: [authGuard],
                 loadComponent: () =>
-                import('./features/pages/eleccion/eleccion.component').then(m => m.EleccionComponent)
+                import('./features/pages/dashboard/dashboard.component').then(m => m.DashboardComponent)
             }
         ]
     },
