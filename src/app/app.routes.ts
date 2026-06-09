@@ -45,11 +45,18 @@ export const routes: Routes = [
                 loadComponent: () =>
                 import('./features/pages/eleccion/eleccion.component').then(m => m.EleccionComponent)
             },
-            // {
-            //     path: 'candidato',
-            //     loadComponent: () =>
-            //     import('./features/pages/eleccion/eleccion.component').then(m => m.EleccionComponent)
-            // }
+            {
+                path: 'candidato',
+                canActivate: [authGuard],
+                loadComponent: () =>
+                import('./features/pages/eleccion/configuracion/configuracion.component').then(m => m.ConfiguracionComponent)
+            },
+            {
+                path: 'candidato/:idProceso',
+                canActivate: [authGuard],
+                loadComponent: () =>
+                import('./features/pages/eleccion/configuracion/configuracion.component').then(m => m.ConfiguracionComponent)
+            }
         ]
     },
 

@@ -1,0 +1,361 @@
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <!-- NAV TABS -->
+                        <ul class="nav nav-tabs" id="tabsEleccion" role="tablist">                            
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#candidatosTab" type="button">
+                                    Candidatos
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#colaboradoresTab" type="button">
+                                    Colaboradores
+                                </button>
+                            </li>
+                        </ul> 
+
+                        <!-- <form [formGroup]="mainForm" (ngSubmit)="guardar()"> -->
+                            <div class="tab-content" id="tabsEleccionContent">
+                                <!------------------CANDIDATOS ----------------------->
+                                <div class="tab-pane fade show active" id="candidatosTab"> 
+                                        <div class="d-flex justify-content-between align-items-center p-1">
+                                            <h4> Datos de los candidatos </h4>
+                                            <div class="d-flex gap-2">
+                                                <button type="button" class="btn btn-primary btn"
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#candidatoModal"
+                                                    >
+                                                    <i class="bi bi-plus-circle me-1 text-center"></i>
+                                                </button>                                                
+                                            </div>                                            
+                                        </div> 
+
+                                        <div class="row"><!-- formArrayName="candidatos" -->                                            
+                                            <!-- @for (item of candidatos.controls; track $index; let i = $index) {  -->
+                                            @for (item of listaCandidatos; track $index; let i = $index) { 
+                                                <div class="col-md-3 mb-4" > <!-- [formGroupName]="i" -->                                                    
+                                                    <div class="card mb-4 box-shadow" >                                            
+                                                        <div class="card candidato-card border-0 shadow-sm h-100"> 
+                                                            <div class="position-relative">
+                                                                <img [src]="item.fotoPreview || 'assets/images/users/user-default.jpg'"
+                                                                    class="card-img-top"
+                                                                    style="height: 200px; object-fit: cover;">  
+                                                                    @if (item.estado !== 2) {
+                                                                        <div class="acciones">
+                                                                            <button type="button"
+                                                                                    class="btn btn-light btn-icon"
+                                                                                    data-bs-toggle="modal"
+                                                                                    data-bs-target="#candidatoModal"
+                                                                                    (click)="editarCandidato(i)"
+                                                                                    >
+                                                                                <i class="bi bi-pencil"></i>
+                                                                            </button> 
+
+                                                                            <button type="button"
+                                                                                    class="btn btn-danger btn-icon"
+                                                                                    (click)="eliminarCandidato(i)">
+                                                                                <i class="bi bi-trash"></i>
+                                                                            </button> 
+                                                                        </div>
+                                                                    }        
+                                                            </div> 
+
+                                                            <div class="card-body text-center">
+                                                                <h6 class="fw-semibold mb-1">{{ item.nombreCompleto || 'Sin nombre' }}</h6>
+                                                                <small class="text-muted d-block">{{ item.area || 'Sin área' }}</small> 
+                                                            </div>                                                
+                                                        </div> 
+                                                    </div>                                                   
+                                                </div>
+                                                }              
+                                            
+                                            @if (listaCandidatos.length === 0) {
+                                                <tr>
+                                                    <td colspan="4" class="text-center text-muted py-3">
+                                                    <i class="bi bi-inbox me-2"></i>
+                                                        No hay candidatos, debe agregar mas de un candidato. <i class="bi bi-plus-circle me-1"></i>
+                                                    </td>
+                                                </tr>
+                                            }  
+                                        </div> 
+                                </div>
+
+                                <!---------------COLABORADORES ----------------------->
+                                <div class="tab-pane fade" id="colaboradoresTab">
+                                <div class="d-flex justify-content-between align-items-center p-1">
+                                    <h4> Datos del colaboradores </h4>
+                                    <div class="d-flex gap-2">
+                                        <button type="button" 
+                                                class="btn btn-primary" 
+                                                (click)="fileInput.click()">
+                                                <i class="bi bi-file-earmark-excel"></i> 
+                                                Cargar Excel
+                                        </button>
+                                            <input #fileInput type="file" 
+                                                    accept=".xlsx, .xls" 
+                                                    (change)="cargarExcel($event.target.files)" 
+                                                    style="display: none">  
+                                        
+                                        <button type="button" 
+                                                class="btn btn-primary"
+                                                (click)="agregarColaborador()">
+                                                <i class="bi bi-plus-circle me-1 text-center"></i>
+                                        </button> 
+                                    </div>
+                                </div>    
+                                    
+                                    <!-- <div class="card-body p-0">
+                                        <div class="table-responsive">
+                                            <table class="table align-middle mb-0 tabla-moderna">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="min-width:80px"></th>
+                                                        <th style="min-width:170px">Tipo</th>
+                                                        <th style="min-width:120px">Documento</th>
+                                                        <th style="min-width:140px">Nombre</th>
+                                                        <th style="min-width:140px">Ape. Paterno</th>
+                                                        <th style="min-width:140px">Ape. Materno</th>
+                                                        <th style="min-width:160px">Correo</th>
+                                                        <th style="min-width:140px">Cargo</th>
+                                                        <th style="min-width:140px">Sede</th> 
+                                                    </tr>
+                                                </thead>
+                                                <tbody formArrayName="colaboradores">
+                                                    @for (item of colaboradores.controls; track i; let i = $index) {
+                                                        <tr [formGroupName]="i">
+                                                            <td>                                                                                                                                                 
+                                                                <button type="button" class="btn btn-danger" 
+                                                                        (click)="eliminarColaborador(i)">
+                                                                    <i class="bi bi-x-circle me-1"></i>
+                                                                </button>                                          
+                                                            </td>                                               
+                                                            <td>
+                                                                <select class="form-select" formControlName="tipoDocumento">
+                                                                    <option value="0">[Seleccione]</option>
+                                                                    <option value="DNI">DNI</option>
+                                                                    <option value="CARNET EXT">CARNET EXT</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" class="form-control" formControlName="numeroDocumento">
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" class="form-control" formControlName="nombre">
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" class="form-control" formControlName="apellidoPaterno">
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" class="form-control" formControlName="apellidoMaterno">
+                                                            </td>
+                                                            <td>
+                                                                <input type="email" class="form-control" formControlName="emailDifusion">
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" class="form-control" formControlName="cargo">
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" class="form-control" formControlName="sede">
+                                                            </td> 
+                                                        </tr>
+                                                    }  
+
+                                                    @if (colaboradores.length === 0) {
+                                                        <tr>
+                                                            <td colspan="9" class="text-center text-muted py-3">
+                                                                <i class="bi bi-inbox me-2"></i> No hay colaboradores. Carga un Excel o agrega manualmente.
+                                                            </td>
+                                                        </tr>
+                                                    }                                      
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+
+                                        <div class="d-flex justify-content-between align-items-center mt-3">
+                                            <span>Mostrando página {{ paginacionActual.page }} de {{ totalPaginas }}</span>
+                                            
+                                            <nav aria-label="Paginacion candidatos">
+                                                <ul class="pagination mb-0">
+                                                <li class="page-item" [class.disabled]="paginacionActual.page === 1">
+                                                    <button class="page-link" (click)="cambiarPagina(paginacionActual.page - 1)">Anterior</button>
+                                                </li>
+                                                
+                                                <li class="page-item" [class.disabled]="paginacionActual.page === totalPaginas">
+                                                    <button class="page-link" (click)="cambiarPagina(paginacionActual.page + 1)">Siguiente</button>
+                                                </li>
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                    </div>                                                    -->
+                                </div>
+                            </div>
+                        <!-- </form> -->
+                    </div>
+                </div> 
+            </div>
+        </div>
+    </div>
+</div> 
+
+
+
+<!-- MODAL CANDIDATOS -->
+<div class="modal fade" id="candidatoModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content shadow-xl rounded-4">
+            <div class="modal-header bg-primary">
+                <h3 class="modal-title text-white">Mantenimiento de Candidatos</h3>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <form [formGroup]="fbcandidatos" (ngSubmit)="agregarCandidato()">           
+                <div class="modal-body">           
+                <div class="row g-3">                               
+                    <div class="col-md-6">
+                        <label class="form-label">Nombre Completo</label>
+                        <input type="text" class="form-control" 
+                        formControlName="nombreCompleto" 
+                        [class.is-invalid]="isInvalid('nombreCompleto')">
+                        @if (isInvalid('nombreCompleto')) {
+                            <div class="invalid-feedback">
+                                El nombre del candidato es obligatorio
+                            </div>
+                        }
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Foto</label>
+                        <div class="foto-upload-wrapper" 
+                            [class.is-invalid-wrapper]="isInvalid('foto')">
+                            
+                            <div class="foto-preview-area">
+                                @if (fotoPreview) {
+                                    <img [src]="fotoPreview" alt="Preview foto" class="foto-preview-img" />
+                                    <div class="foto-preview-overlay">
+                                    <i class="bi bi-camera"></i>
+                                    <span>Cambiar foto</span>
+                                    </div>
+                                } @else {
+                                    <div class="foto-placeholder">
+                                    <i class="bi bi-person-bounding-box"></i>
+                                    <span>Seleccionar foto</span>
+                                    <small>.jpg o .jpeg · máx. 2MB</small>
+                                    </div>
+                                }
+                                <input 
+                                    type="file" 
+                                    class="foto-input"
+                                    accept=".jpg,.jpeg"
+                                    (change)="onFileChangeCandidato($event.target.files)" />
+                            </div>
+
+                        </div>
+
+                        @if (fbcandidatos.get('foto')?.errors?.['required']) {
+                            <div class="invalid-feedback d-block">La foto es obligatoria</div>
+                        }
+                        @if (fbcandidatos.get('foto')?.errors?.['tipo']) {
+                            <div class="invalid-feedback d-block">Solo se permiten archivos JPG</div>
+                        }
+                        @if (fbcandidatos.get('foto')?.errors?.['size']) {
+                            <div class="invalid-feedback d-block">El archivo no debe superar 2MB</div>
+                        }
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Tipo de Documento</label>
+                        <select class="form-select" 
+                        formControlName="tipoDocumento"
+                        [class.is-invalid]="isInvalid('tipoDocumento')">
+                            <option value="0" selected>Seleccione</option>
+                            <option value="DNI">DNI</option>
+                            <option value="CE">Carnet de Extranjería</option>
+                        </select>
+                        @if(isInvalid('tipoDocumento')){
+                            <div class="invalid-feedback">
+                                El tipo de documento es obligatorio
+                            </div>
+                        }
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Número de Documento</label>
+                        <input type="text" class="form-control" [disabled]="false"
+                        formControlName="numeroDocumento"
+                        [class.is-invalid]="isInvalid('numeroDocumento')"
+                        >                                
+                        @if (isInvalid('numeroDocumento')) {
+                        <div class="invalid-feedback">
+                            @if (fbcandidatos.get('numeroDocumento')?.errors?.['required']) {
+                            <div>El numero de documento es obligatorio</div>
+                            }
+                            @if (fbcandidatos.get('numeroDocumento')?.errors?.['pattern']) {
+                            <div>
+                                @switch (fbcandidatos.get('tipoDocumento')?.value) {
+                                    @case ('DNI') { DNI debe tener 8 dígitos }
+                                    @case ('CE') { CE debe tener entre 9 y 12 caracteres }
+                                    <!-- @default { Formato inválido } -->
+                                }
+                            </div>
+                            }
+                        </div>
+                        }
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Área</label>
+                        <input type="text" class="form-control" 
+                        formControlName="area"
+                        [class.is-invalid]="isInvalid('area')"
+                        >
+                        @if(isInvalid('area')){
+                            <div class="invalid-feedback">
+                                El area es obligatorio
+                            </div>
+                        }
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Localidad</label>
+                        <input type="text" class="form-control" 
+                        formControlName="localidad"
+                        [class.is-invalid]="isInvalid('localidad')"
+                        >
+                        @if(isInvalid('localidad')){
+                            <div class="invalid-feedback">
+                                La localidad es obligatorio
+                            </div>
+                        }
+                    </div>
+                    <div class="col-md-12">
+                        <label class="form-label">Descripción</label>
+                        <textarea class="form-control" rows="3"  maxlength="255"
+                        formControlName="descripcion"
+                        [class.is-invalid]="isInvalid('descripcion')"></textarea>
+                        @if(isInvalid('descripcion')){
+                            <div class="invalid-feedback">
+                                La descripción es obligatorio
+                            </div>
+                        }
+                    </div>
+                </div>
+                </div>               
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+
+                    <button 
+                        type="submit" 
+                        class="btn btn-primary" 
+                        data-bs-dismiss="modal"                   
+                        [disabled]="fbcandidatos.invalid">
+                        Guardar
+                    </button> 
+                </div> 
+            </form>               
+        </div>
+    </div>
+</div>

@@ -1,7 +1,7 @@
 import { Component, inject, Injectable } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { RegistroService } from '../registro/service/registro.service'
+import { LoginService } from '../login/service/login.service';
 
 import Swal from 'sweetalert2'
 import { UsuarioRequest } from './models/usuario.model';
@@ -26,7 +26,7 @@ export class RegistroComponent {
     perfil : ['Empresa']
   });
 
-  constructor(private router: Router, private registroService: RegistroService) {}
+  constructor(private router: Router, private loginService: LoginService) {}
 
   save(): void{
     this.errors = [];
@@ -39,7 +39,7 @@ export class RegistroComponent {
       const _contrasena = this.fb.value.clave;
       const _repetircontrasena = this.fb.value.confirmarclave;
       if(_contrasena === _repetircontrasena){       
-        this.registroService.save(this.usuario).subscribe({
+        this.loginService.save(this.usuario).subscribe({
           next:(response)=> {
             if(response){
                 Swal.fire({

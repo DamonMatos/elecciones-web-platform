@@ -1,17 +1,30 @@
-import { candidato } from "./candidato.model";
 import { proceso } from "./proceso.model";
-
 export interface Eleccion {
-    ideleccion: number;
-    idcliente:number;
+    idEleccion: number;
+    idCliente:number;
     nombre: string;
-    color: string;
+    colorBase: string;
     imagenLogo:File;
-    fechaDifusion: string |null;
+    fechaDifusion?: string |null;
     fechaInicio: string;
     fechaFin: string;
-    plantilla: boolean;
+    planilla: boolean;
     difusion:boolean;
+    estado: number;
     procesos?: proceso[];
-    candidatos?: candidato[];
+}
+
+export interface EleccionRequest {
+    idCliente:number; 
+    idEleccion: number;
+}
+export interface EleccionResponse {
+    eleccion: Eleccion;
+    procesos: proceso[];
+}
+
+
+export interface ProcesoRequest{
+    idEleccion:number;
+    idProceso:number;
 }

@@ -1,8 +1,8 @@
 export interface proceso {
-    ideleccion: number;
-    idproceso: number;
-    nombreProceso: string;
-    numeroCandidatos: number;
+    idEleccion: number;
+    idProceso: number;
+    nombre: string;
+    numeroCandidato: number;
     votacionObligatoria: boolean;
     estado:number;
 }

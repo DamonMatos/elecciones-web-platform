@@ -55,9 +55,19 @@ export abstract class ApiService {
         const url = `${this.endpoint}/${path}`;
         return this.http.put<TResponse>(url, body);
     }
+    
     delete<TResponse>(path: string | number): Observable<TResponse>;
-    delete<TRequest, TResponse>(body: TRequest, path?: string| number): Observable<TResponse>{
+    delete<TRequest, TResponse>(body: TRequest, path?: string| number): Observable<TResponse>;
+    delete<TRequest, TResponse>(bodyOrPath: TRequest | string | number, path?: string | number): Observable<TResponse> {
+        // Si el primer argumento es string/number sin segundo arg → es path
+        if ((typeof bodyOrPath === 'string' || typeof bodyOrPath === 'number') && path === undefined) {
+            const url = `${this.endpoint}/${bodyOrPath}`;
+            return this.http.delete<TResponse>(url);
+        }
+        // Si hay body → body + path opcional
+
         const url = `${this.endpoint}/${path}`;
-        return this.http.delete<TResponse>(url,{body});
+        return this.http.delete<TResponse>(url,{body: bodyOrPath});
     }
+
 }

@@ -1,6 +1,6 @@
 export interface colaborador {
-    ideleccion: number;
-    idproceso:number;
+    idEleccion: number;
+    idProceso:number;
     tipoDocumento: string;
     numeroDocumento: string;
     cargo: string;
@@ -8,8 +8,14 @@ export interface colaborador {
     nombre: string;
     apellidoPaterno: string;
     apellidoMaterno: string;    
-    fechaRegistro: Date;
-    correo: string;
-    idusuario: number;  
+    emailDifusion: string;
+    idUsuario: number;  
     estado:number;
+}
+
+export interface colaboradorPaginada {
+    items: colaborador[];
+    totalRegistros: number;
+    page: number;
+    limit: number;
 }

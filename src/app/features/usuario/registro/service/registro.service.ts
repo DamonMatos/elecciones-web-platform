@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { LoginRequest } from '../../login/models/login.model';
-import { ApiService } from '../../../../core/services/api.service';
 import { ApiResponse } from '../../../../core/models/common/api-response.model';
 import { UsuarioMenuResponse, UsuarioRequest, UsuarioResponse } from '../models/usuario.model';
-import { map, Observable } from 'rxjs';
-import { ClienteResponse } from '../../../pages/perfil/models/cliente.model';
 import { PerfilRequest } from '../../../pages/perfil/models/perfil.model';
+
+import { ApiService } from '../../../../core/services/api.service';
+import { map, Observable } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root',
@@ -13,17 +13,7 @@ import { PerfilRequest } from '../../../pages/perfil/models/perfil.model';
 export class RegistroService extends ApiService {
 
   protected override apiSection = 'elecciones' as const;
-  protected override recurso = 'user' as const;
-
-  save(request: UsuarioRequest): Observable<UsuarioMenuResponse>
-  {
-    return this.post<UsuarioRequest,ApiResponse<UsuarioMenuResponse>>
-    (request,'register').pipe(
-                map((response:ApiResponse<UsuarioMenuResponse>)=>{
-                  return response.data!;
-      })
-    );
-  }
+  protected override recurso = 'users' as const;
 
   update(request: PerfilRequest): Observable<any> 
   {
