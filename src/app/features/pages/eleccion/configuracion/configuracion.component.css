@@ -77,3 +77,7 @@
     opacity: 0;
     cursor: pointer;
 }
+
+.mi-modal-ancho .modal-dialog {
+    max-width: 80% !important; 
+}

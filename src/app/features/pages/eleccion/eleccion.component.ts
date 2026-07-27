@@ -36,6 +36,8 @@ export class EleccionComponent {
   _IdCliente:number | null = null;
   _CatalogoEleccion = signal<CatalogoResponse[]>([]);
 
+  _validardifusion = signal<boolean>(false);
+
   
 
   readonly fb = this.Fornbuilder.group({
@@ -76,6 +78,7 @@ export class EleccionComponent {
   }
 
   getCatalogo(): void {
+    this._validardifusion = signal(false);
       const _idTipo = 1;
       this._IdCliente = this.authStorageService.getCliente();
       const request: CatalogoRequest = {
@@ -121,6 +124,7 @@ export class EleccionComponent {
               estado:              this._Estado
             });
 
+          this._validardifusion = (response.eleccion.difusionEnviada === true) ? signal<boolean>(true) : signal<boolean>(false);
           this.cargarProcesos(response.procesos);
 
         },
@@ -220,16 +224,20 @@ export class EleccionComponent {
                     this.cdr.detectChanges();
                     Swal.fire('Eliminado', response.message || 'El proceso ha sido eliminado.', 'success');                  
                 },
-                error: (error) => {           
-                  Swal.fire('Error','Error al eliminar el proceso.', 'error'); 
+                error: (error) => {    
+                    Swal.fire({
+                      title: "Error",
+                      text: error.error.message || "Ocurrió un error al guardar la elección. Por favor, intenta nuevamente.",
+                      icon: "error",
+                      draggable: true
+                    });
                 }
             });
           }
           else{       
-            console.log('Proceso eliminado:', valor.value);
             this.procesos.removeAt(index);  
             this.cdr.detectChanges();
-            Swal.fire('Eliminado','El proceso ha sido eliminado.', 'success');
+            Swal.fire('Eliminado', 'El proceso ha sido eliminado.', 'success');
           }        
         }
     });
@@ -260,7 +268,7 @@ export class EleccionComponent {
         fechaInicio: this.fb.value.fechaInicioEleccion!,
         fechaFin: this.fb.value.fechaFinEleccion!,
         planilla: false,//this.fb.value.plantillaConfirmada!,
-        difusion: false,
+        difusionEnviada: false,
         estado: this._Estado,
         procesos  : listaProcesos
       };
@@ -279,10 +287,9 @@ export class EleccionComponent {
           this.getCatalogo();
         },
       error: (error) => {
-          console.error('Error al guardar la elección:', error);
           Swal.fire({
             title: "Error",
-            text: "Ocurrió un error al guardar la elección. Por favor, intenta nuevamente.",
+            text: error.error.message || "Ocurrió un error al guardar la elección. Por favor, intenta nuevamente.",
             icon: "error",
             draggable: true
           });
@@ -291,6 +298,7 @@ export class EleccionComponent {
   }
 
   iniciarDifusion(): void {
+    
     Swal.fire({
       title: '¿Iniciar Difusión?', 
       text: '¿Deseas iniciar la difusión de esta elección?',
@@ -302,8 +310,32 @@ export class EleccionComponent {
       cancelButtonText: 'Cancelar'
       }).then((result) => {
         if (result.isConfirmed) {
-          // Aquí puedes agregar la lógica para iniciar la difusión, por ejemplo, llamando a un servicio
-          Swal.fire('Difusión Iniciada', 'La difusión de la elección ha sido iniciada.', 'success');
+
+          if(this._IdEleccion === 0 || isNaN(this._IdEleccion)){
+            Swal.fire({
+              title: "Error",
+              text: "No a guardado la elección. Por favor, guarda la elección antes de iniciar la difusión.",
+              icon: "error",
+              draggable: true
+            });
+            return;
+          }
+
+          this.eleccionService.difusion(this._IdEleccion).subscribe({
+            next: (response) => {
+              Swal.fire('Difusión Iniciada', 'La difusión de la elección ha sido iniciada.', 'success');
+              this._validardifusion = signal(true);
+            },
+            error: (error) => {
+              Swal.fire({
+                title: "Error",
+                text: error.error.message || "Ocurrió un error al iniciar la difusión. Por favor, intenta nuevamente.",
+                icon: "error",
+                draggable: true
+              });
+            }
+          });
+          
         }
     });
   }
@@ -313,6 +345,7 @@ export class EleccionComponent {
       request.value.idEleccion,
       request.value.idProceso
     );
+    this.eleccionState.setValidarDifusion(this._validardifusion());
 
     this.router.navigate(['configuracion/candidato', request.value.idProceso]);
   }

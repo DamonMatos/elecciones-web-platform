@@ -26,26 +26,29 @@
                                         <div class="d-flex justify-content-between align-items-center p-1">
                                             <h4> Datos de los candidatos </h4>
                                             <div class="d-flex gap-2">
-                                                <button type="button" class="btn btn-primary btn"
-                                                    data-bs-toggle="modal" 
-                                                    data-bs-target="#candidatoModal"
-                                                    >
-                                                    <i class="bi bi-plus-circle me-1 text-center"></i>
-                                                </button>                                                
+                                                @if(!_validardifusion) {
+                                                    <button type="button" class="btn btn-primary btn"
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#candidatoModal"
+                                                        (click)="nuevoCandidato()"
+                                                        >
+                                                        <i class="bi bi-plus-circle me-1 text-center"></i>
+                                                    </button>   
+                                                }                                               
                                             </div>                                            
                                         </div> 
 
-                                        <div class="row"><!-- formArrayName="candidatos" -->                                            
-                                            <!-- @for (item of candidatos.controls; track $index; let i = $index) {  -->
+                                        <div class="row">
                                             @for (item of listaCandidatos; track $index; let i = $index) { 
-                                                <div class="col-md-3 mb-4" > <!-- [formGroupName]="i" -->                                                    
+                                                <div class="col-md-3 mb-4" >                                                    
                                                     <div class="card mb-4 box-shadow" >                                            
                                                         <div class="card candidato-card border-0 shadow-sm h-100"> 
                                                             <div class="position-relative">
                                                                 <img [src]="item.fotoPreview || 'assets/images/users/user-default.jpg'"
                                                                     class="card-img-top"
                                                                     style="height: 200px; object-fit: cover;">  
-                                                                    @if (item.estado !== 2) {
+
+                                                                    @if (!_validardifusion) {
                                                                         <div class="acciones">
                                                                             <button type="button"
                                                                                     class="btn btn-light btn-icon"
@@ -63,6 +66,7 @@
                                                                             </button> 
                                                                         </div>
                                                                     }        
+
                                                             </div> 
 
                                                             <div class="card-body text-center">
@@ -72,7 +76,7 @@
                                                         </div> 
                                                     </div>                                                   
                                                 </div>
-                                                }              
+                                            }              
                                             
                                             @if (listaCandidatos.length === 0) {
                                                 <tr>
@@ -90,82 +94,85 @@
                                 <div class="d-flex justify-content-between align-items-center p-1">
                                     <h4> Datos del colaboradores </h4>
                                     <div class="d-flex gap-2">
-                                        <button type="button" 
-                                                class="btn btn-primary" 
-                                                (click)="fileInput.click()">
-                                                <i class="bi bi-file-earmark-excel"></i> 
-                                                Cargar Excel
-                                        </button>
-                                            <input #fileInput type="file" 
-                                                    accept=".xlsx, .xls" 
-                                                    (change)="cargarExcel($event.target.files)" 
-                                                    style="display: none">  
-                                        
-                                        <button type="button" 
-                                                class="btn btn-primary"
-                                                (click)="agregarColaborador()">
-                                                <i class="bi bi-plus-circle me-1 text-center"></i>
-                                        </button> 
+                                        @if (!_validardifusion) {
+                                            <button type="button" class="btn btn-success btn"
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#colaboradormultipleModal"
+                                                    >
+                                                    <i class="bi bi-file-earmark-excel"></i>
+                                            </button>  
+                                        }                                                                             
                                     </div>
                                 </div>    
                                     
-                                    <!-- <div class="card-body p-0">
+                                    <div class="card-body p-0">
                                         <div class="table-responsive">
                                             <table class="table align-middle mb-0 tabla-moderna">
                                                 <thead>
                                                     <tr>
-                                                        <th style="min-width:80px"></th>
-                                                        <th style="min-width:170px">Tipo</th>
+                                                        @if(!_validardifusion) {
+                                                            <th style="min-width:80px"></th>
+                                                        }   
+                                                        <th style="min-width:100px">Tipo</th>
                                                         <th style="min-width:120px">Documento</th>
-                                                        <th style="min-width:140px">Nombre</th>
+                                                        <th style="min-width:150px">Nombre</th>
                                                         <th style="min-width:140px">Ape. Paterno</th>
                                                         <th style="min-width:140px">Ape. Materno</th>
                                                         <th style="min-width:160px">Correo</th>
-                                                        <th style="min-width:140px">Cargo</th>
-                                                        <th style="min-width:140px">Sede</th> 
+                                                        <th style="min-width:200px">Cargo</th>
+                                                        <th style="min-width:100px">Sede</th> 
                                                     </tr>
                                                 </thead>
-                                                <tbody formArrayName="colaboradores">
-                                                    @for (item of colaboradores.controls; track i; let i = $index) {
-                                                        <tr [formGroupName]="i">
-                                                            <td>                                                                                                                                                 
-                                                                <button type="button" class="btn btn-danger" 
-                                                                        (click)="eliminarColaborador(i)">
-                                                                    <i class="bi bi-x-circle me-1"></i>
-                                                                </button>                                          
-                                                            </td>                                               
+                                                <tbody>
+                                                    @for (item of listaColaboradores; track i; let i = $index) {
+                                                        <tr>
+                                                            @if(!_validardifusion) {
+                                                                <td>                                                                                                                                                 
+                                                                    <button type="button" class="btn btn-danger" 
+                                                                            (click)="eliminarColaborador(i)">
+                                                                        <i class="bi bi-x-circle me-1"></i>
+                                                                    </button>                                          
+                                                                </td>
+                                                            }                                                                                                           
                                                             <td>
-                                                                <select class="form-select" formControlName="tipoDocumento">
+                                                                {{item.tipoDocumento}}
+                                                                <!-- <select class="form-select" formControlName="tipoDocumento">
                                                                     <option value="0">[Seleccione]</option>
                                                                     <option value="DNI">DNI</option>
                                                                     <option value="CARNET EXT">CARNET EXT</option>
-                                                                </select>
+                                                                </select> -->
                                                             </td>
                                                             <td>
-                                                                <input type="text" class="form-control" formControlName="numeroDocumento">
+                                                                {{item.numeroDocumento}}
+                                                                <!-- <input type="text" class="form-control" [value]="item.numeroDocumento"> -->
                                                             </td>
                                                             <td>
-                                                                <input type="text" class="form-control" formControlName="nombre">
+                                                                {{item.nombre}}                                                                
                                                             </td>
                                                             <td>
-                                                                <input type="text" class="form-control" formControlName="apellidoPaterno">
+                                                                {{item.apellidoPaterno}}
+                                                                <!-- <input type="text" class="form-control" [value]="item.apellidoPaterno"> -->
                                                             </td>
                                                             <td>
-                                                                <input type="text" class="form-control" formControlName="apellidoMaterno">
+                                                                {{item.apellidoMaterno}}
+                                                                <!-- <input type="text" class="form-control" [value]="item.apellidoMaterno"> -->
                                                             </td>
                                                             <td>
-                                                                <input type="email" class="form-control" formControlName="emailDifusion">
+                                                                {{item.emailDifusion}}
+                                                                <!-- <input type="email" class="form-control" [value]="item.emailDifusion"> -->
                                                             </td>
                                                             <td>
-                                                                <input type="text" class="form-control" formControlName="cargo">
+                                                                {{item.cargo}}
+                                                                <!-- <input type="text" class="form-control" [value]="item.cargo"> -->
                                                             </td>
                                                             <td>
-                                                                <input type="text" class="form-control" formControlName="sede">
+                                                                {{item.sede}}
+                                                                <!-- <input type="text" class="form-control" [value]="item.sede"> -->
                                                             </td> 
                                                         </tr>
                                                     }  
 
-                                                    @if (colaboradores.length === 0) {
+                                                    @if (listaColaboradores.length === 0) {
                                                         <tr>
                                                             <td colspan="9" class="text-center text-muted py-3">
                                                                 <i class="bi bi-inbox me-2"></i> No hay colaboradores. Carga un Excel o agrega manualmente.
@@ -192,7 +199,7 @@
                                                 </ul>
                                             </nav>
                                         </div>
-                                    </div>                                                    -->
+                                    </div>                                                    
                                 </div>
                             </div>
                         <!-- </form> -->
@@ -240,17 +247,18 @@
                                     <i class="bi bi-camera"></i>
                                     <span>Cambiar foto</span>
                                     </div>
-                                } @else {
+                                } 
+                                @else {
                                     <div class="foto-placeholder">
                                     <i class="bi bi-person-bounding-box"></i>
                                     <span>Seleccionar foto</span>
-                                    <small>.jpg o .jpeg · máx. 2MB</small>
+                                    <small>.jpg · máx. 2MB</small>
                                     </div>
                                 }
                                 <input 
                                     type="file" 
                                     class="foto-input"
-                                    accept=".jpg,.jpeg"
+                                    accept=".jpg"
                                     (change)="onFileChangeCandidato($event.target.files)" />
                             </div>
 
@@ -359,3 +367,122 @@
         </div>
     </div>
 </div>
+
+<!-- MODAL COLABORADOR MULTIPLE -->
+<div class="modal mi-modal-ancho fade" id="colaboradormultipleModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content shadow-xl rounded-4">
+            <div class="modal-header bg-primary">
+                <h3 class="modal-title text-white">Cargar Colaboradores</h3>
+                <button type="button" 
+                        class="btn-close btn-close-white" 
+                        data-bs-dismiss="modal"
+                        (click)="cancelarCargaColaboradores()">
+                </button>
+            </div>
+            <div class="modal-body">           
+                <div class="row g-3">                               
+                    <div class="col-md-12">
+                        <div class="table-responsive">                                            
+                            <table class="table align-middle mb-0 tabla-moderna">
+                                <thead>
+                                    <tr>    
+                                        <th style="min-width:80px"></th>                                   
+                                        <th style="min-width:120px">Tipo</th>
+                                        <th style="min-width:100px">Documento</th>
+                                        <th style="min-width:140px">Nombre</th>
+                                        <th style="min-width:130px">Ape. Paterno</th>
+                                        <th style="min-width:135px">Ape. Materno</th>
+                                        <th style="min-width:160px">Correo</th>
+                                        <!-- <th style="min-width:180px">Cargo</th>
+                                        <th style="min-width:180px">Sede</th>                                        -->
+                                    </tr>
+                                </thead>
+                                
+                                <tbody>
+                                    @for (item of listaColaboradorestemporal; track $index) {
+                                        <tr>
+                                            <td>
+                                                <button type="button" class="btn btn-danger" (click)="eliminarColaborador($index)">                       
+                                                    <i class="bi bi-x-circle me-1"></i>
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <select class="form-select" [value]="item.tipoDocumento">
+                                                    <option value="0">[Seleccione]</option>
+                                                    <option value="DNI">DNI</option>
+                                                    <option value="CARNET EXT">CARNET EXT</option>
+                                                </select> 
+                                            </td>       
+                                            <td>
+                                                <input type="text" class="form-control" [value]="item.numeroDocumento">
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" [value]="item.nombre">
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" [value]="item.apellidoPaterno">
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" [value]="item.apellidoMaterno">
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" [value]="item.emailDifusion">
+                                            </td>
+                                            <!-- <td>
+                                                <input type="text" class="form-control" [value]="item.cargo">
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" formControlName="sede" [value]="item.sede">
+                                            </td> -->
+                                            
+                                        </tr>
+                                    }
+                                </tbody>
+                                @if (listaColaboradorestemporal.length === 0) {
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="8" class="text-center text-muted py-3">
+                                                <i class="bi bi-inbox me-2"></i> No hay colaboradores cargados. Carga un Excel para agregar colaboradores.
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                }
+                                
+
+                            </table> 
+                        </div>                           
+                    </div>
+                </div>  
+            </div>             
+            <div class="modal-footer">
+                <button type="button" 
+                        class="btn btn-secondary" 
+                        data-bs-dismiss="modal" 
+                        (click)="cancelarCargaColaboradores()">
+                    Cancelar
+                </button> 
+
+                @if (listaColaboradorestemporal.length > 0) {
+                    <button type="button" 
+                    class="btn btn-primary" 
+                    (click)="guardarColaboradores()">
+                        Guardar
+                    </button>                      
+                } 
+
+                @if (listaColaboradorestemporal.length === 0) {
+                    <button type="button" 
+                        class="btn btn-success" 
+                        (click)="fileInput.click()">
+                        <i class="bi bi-file-earmark-excel"></i> 
+                        Cargar Excel
+                    </button>
+                    <input #fileInput type="file" accept=".xlsx, .xls" 
+                            (change)="cargarExcel($event.target.files)" 
+                            style="display: none">                      
+                }             
+            </div>                    
+        </div>
+    </div>
+</div> 

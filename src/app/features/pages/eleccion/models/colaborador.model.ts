@@ -9,8 +9,12 @@ export interface colaborador {
     apellidoPaterno: string;
     apellidoMaterno: string;    
     emailDifusion: string;
-    idUsuario: number;  
+    //idUsuario: number;  
     estado:number;
+}
+
+export interface colaboradorRequest {
+    colaboradores: colaborador[];
 }
 
 export interface colaboradorPaginada {

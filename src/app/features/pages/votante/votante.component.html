@@ -1,0 +1,87 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="procesoSelect" class="form-label">Proceso de elecciones:</label>
+                        <select id="procesoSelect" class="form-select" (change)="onProcesoChange($event)">
+                            <option value="">Seleccione un proceso</option>
+                            @for(proceso of procesos(); track proceso.idProceso) {
+                                <option [value]="proceso.idProceso">{{ proceso.nombreProceso }}</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-6 d-flex align-items-end">
+                        <button class="btn btn-success" [disabled]="!esVotoValido()" (click)="enviarVotacion()">
+                            Enviar Votación
+                        </button>
+                        
+                    </div>
+                    <div class="col-md-12 margen-top-5">
+                        <div class="alert alert-info d-flex justify-content-between align-items-center">
+                            <span>
+                                <strong>Progreso de votación:</strong> 
+                                Seleccionados {{ electores().length }} de un máximo de 6 (Mínimo 2).
+                            </span>                            
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row">
+                            @for(candidato of candidatos(); track candidato.idCandidato) {
+                                <div class="col-md-4 mb-3" style="cursor: pointer;">                                
+                                    <div class="card h-60 margen-top-5" 
+                                        [class.border-success]="candidatosSeleccionados().includes(candidato.idCandidato)"
+                                        [class.border-2]="candidatosSeleccionados().includes(candidato.idCandidato)">
+
+                                        <div class="card-body bordes d-flex flex-column justify-content-between"> 
+                                            <div>
+                                                <img [src]="candidato.fotoPreview || 'assets/images/users/user-default.jpg'"
+                                                    style="width: 100%; height: 200px; object-fit: cover; object-position: top center;"> 
+                                                <h5 class="card-title mt-2">{{ candidato.nombreCompleto }}</h5>
+                                                    <p class="card-text">Área: {{ candidato.area }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <!-- Si ya está seleccionado muestra opción de quitar, si no, muestra votar -->
+                                        @if (candidatosSeleccionados().includes(candidato.idCandidato)) {
+                                            <button class="btn btn-danger w-100" (click)="conmutarSeleccion(candidato.idCandidato)">
+                                                <i class="bi bi-dash-circle"></i> Quitar selección
+                                            </button>
+                                        } @else {
+                                            <button class="btn btn-outline-primary w-100" 
+                                                    [disabled]="candidatosSeleccionados().length >= 6"
+                                                    (click)="conmutarSeleccion(candidato.idCandidato)">
+                                                Seleccionar Candidato
+                                            </button>
+                                        }
+                                    </div>
+                                    
+
+                                    <!-- <div class="card h-100 margen-top-10">
+                                        <div class="card-body bordes">                                          
+                                            <img [src]="candidato.fotoPreview || 'assets/images/users/user-default.jpg'"
+                                                style="width: 100%; height: 200px; object-fit: contain; background-color: #f8f9fa;">
+
+                                            <h5 class="card-title">{{ candidato.nombreCompleto }}</h5>
+                                            <p class="card-text">Área: {{ candidatos.area }}</p>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" [checked]="candidatos.votado" disabled>
+                                                <label class="form-check-label">
+                                                    Votado
+                                                </label>
+                                            </div>
+                                        </div> 
+                                    </div>  -->
+
+                                    
+                                </div>
+                            }   
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,44 +1,48 @@
-<section class="vh-100 d-flex align-items-center justify-content-center bg-light">
+<!-- <section class="vh-100 d-flex align-items-center justify-content-center bg-light">
   <div class="card shadow-lg p-4" style="width: 380px;">
-    <h3 class="text-center mb-4">Iniciar Sesión</h3>
+    <h3 class="text-center mb-4">Iniciar Sesión</h3> -->
+<section class="auth-page">
+    <div class="auth-container">
+        <div class="auth-card card shadow-lg p-4">
+            <h3 class="text-center mb-4">Iniciar Sesión</h3>
+              <form [formGroup]="fb" (ngSubmit)="onSubmit()" autocomplete="off" >
+                  <div class="mb-3">
+                    <label class="form-label">Correo electrónico</label>
+                      <input
+                        type="email"
+                        class="form-control"
+                        placeholder="usuario@email.com" 
+                        formControlName="correo"         
+                      />
+                  </div>
 
-    <form [formGroup]="fb" (ngSubmit)="onSubmit()" autocomplete="off" >
-      <div class="mb-3">
-        <label class="form-label">Correo electrónico</label>
-        <input
-          type="email"
-          class="form-control"
-          placeholder="usuario@email.com" 
-          formControlName="correo"         
-        />
-      </div>
+                  <div class="mb-3">
+                    <label class="form-label">Contraseña</label>
+                      <input
+                        type="password"
+                        class="form-control"
+                        placeholder="********"
+                        formControlName="clave"
+                      />
+                  </div>
 
-      <div class="mb-3">
-        <label class="form-label">Contraseña</label>
-        <input
-          type="password"
-          class="form-control"
-          placeholder="********"
-          formControlName="clave"
-        />
-      </div>
+                  <small>
+                      &nbsp;&nbsp; ¿Olvidastes tu contraseña?
+                      <a class="text-decoration-none cursor" 
+                        (click)="send()">Recuperar Contraseña</a>
+                  </small>
 
-      <small>
-          &nbsp;&nbsp; ¿Olvidastes tu contraseña?
-          <a class="text-decoration-none cursor" 
-            (click)="send()">Recuperar Contraseña</a>
-      </small>
+                  <div class="d-grid">
+                    <button class="btn btn-primary">Ingresar</button>
+                  </div>
 
-      <div class="d-grid">
-        <button class="btn btn-primary">Ingresar</button>
-      </div>
-
-      <div class="text-center mt-3">
-        <small>
-          ¿No tienes cuenta?
-          <a routerLink="/registro" class="text-decoration-none cursor">Regístrate</a>
-        </small>
-      </div>
-    </form>
-  </div>
+                  <div class="text-center mt-3">
+                    <small>
+                      ¿No tienes cuenta?
+                      <a routerLink="/registro" class="text-decoration-none cursor">Regístrate</a>
+                    </small>
+                  </div>
+              </form>
+        </div>
+    </div>
 </section>

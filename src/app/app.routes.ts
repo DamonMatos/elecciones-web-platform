@@ -59,7 +59,18 @@ export const routes: Routes = [
             }
         ]
     },
-
+    {
+        path: 'votantes',
+        component: ShellComponent,
+        children: [
+            {
+                path: 'votos',
+                canActivate: [authGuard],
+                loadComponent: () =>
+                import('./features/pages/votante/votante.component').then(m => m.VotanteComponent)
+            },
+        ]
+    },
     {
         path: 'dashboard',
         component: ShellComponent,

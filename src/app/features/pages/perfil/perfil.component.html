@@ -43,31 +43,32 @@
 
                             <div class="col-md-4 mb-3">
                                 <label class="form-label">Nombre Cliente</label>
-                                <input type="text" class="form-control" formControlName="nombreCliente">
+                                <input type="text" class="form-control" formControlName="nombreCliente" [readonly]="!habilitarCampos">
                             </div>
 
                             <div class="col-md-4 mb-3">
                                 <label class="form-label">Razón Social</label>
-                                <input type="text" class="form-control" formControlName="razonSocial">
+                                <input type="text" class="form-control" formControlName="razonSocial" [readonly]="!habilitarCampos">
                             </div>
 
                             <div class="col-md-4 mb-3">
                                 <label class="form-label">RUC</label>
-                                <input type="text" class="form-control" formControlName="ruc">
+                                <input type="text" class="form-control" formControlName="ruc" [readonly]="!habilitarCampos">
                             </div>
 
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Foto</label>
-                                <input type="file" accept=".png" class="form-control" (change)="onFileChange($event.target.files)">
+                                <input type="file" accept=".png" class="form-control" (change)="onFileChange($event.target.files)" [disabled]="!habilitarCampos">
                             </div> 
 
                             <div class="col-md-6 mb-3">
                                 
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <button class="btn btn-success" type="submit">Guardar</button>
-                            </div>
-                            
+                            @if(habilitarCampos){
+                                <div class="col-md-6 mb-3">
+                                    <button class="btn btn-success" type="submit" >Guardar</button>
+                                </div>
+                            }
                         </div>                            
                     </form>
                 </div>

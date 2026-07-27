@@ -13,16 +13,6 @@
                         </select>
                     </div>
 
-                    <div class="col-md-6">
-                        <!-- <label class="form-label">Proceso</label>
-                        <select class="form-select">
-                            <option value=0>Seleccione</option>
-                            @for (item of _CatalogoProceso(); track item.id) {
-                                <option [value]="item.id">{{ item.valor }}</option>
-                            } 
-                            
-                        </select> -->
-                    </div>
                 </div>
         
                 <form [formGroup]="fb" (ngSubmit)="onSubmit()"> 
@@ -122,12 +112,14 @@
                             <hr class="text-secondary">
                                 <div class="d-flex align-items-center justify-content-between mb-2">
                                     <h4 class="mb-0">Datos de los Procesos</h4>
-
-                                    <button type="button"
+                                    @if(_validardifusion() === false) {
+                                        <button type="button"
                                             class="btn btn-primary d-flex align-items-center gap-1"
                                             (click)="agregarProceso()">
                                         <i class="bi bi-plus-circle"></i>
-                                    </button>
+                                        </button>
+                                    }
+                                    
 
                                 </div>
 
@@ -147,20 +139,19 @@
                                             <tr [formGroupName]="i">
                                                 <td style="min-width: 120px;">
                                                     <div class="d-flex gap-2 justify-content-center flex-nowrap">
-                                                        @if (_Estado !== 2) { 
+                                                            <button type="button"
+                                                                    class="btn btn-secondary ms-1"                                                               
+                                                                    (click)="verconfiguracion(item)">
+                                                            <i class="bi bi-person"></i>
+                                                            </button>
+
+                                                        @if(_validardifusion() === false) { 
                                                             <button type="button"
                                                                 class="btn btn-danger"
                                                                 (click)="eliminarProceso(i, item)">
                                                                 <i class="bi bi-x-circle"></i>
                                                             </button>
-                                                        } 
-                                                    
-                                                        <button type="button"
-                                                                class="btn btn-secondary ms-1"                                                               
-                                                                (click)="verconfiguracion(item)">
-                                                        <i class="bi bi-person"></i>
-                                                        </button>
-
+                                                        }                                                                                                       
                                                     </div>
                                                 </td>
                                                 
@@ -209,19 +200,17 @@
                                 </div>         
                         </div>
                     <br>
-                    <input type="button" 
+                    @if(_validardifusion() === false) {
+                        <input type="submit" 
+                            class="btn btn-success" 
+                            value="Guardar">
+                        &nbsp;
+                        <input type="button" 
                             class="btn btn-primary" 
                             value="Iniciar Difusión" 
                             (click)="iniciarDifusion()"
                         > 
-                        &nbsp;
-                    <!-- @if (_Estado !== 2) {  -->
-                        <input type="submit" 
-                            class="btn btn-success" 
-                            value="Guardar">  
-                    <!-- } -->
-                    
-                                                
+                    }                                          
                 </form>         
             </div>
         </div>
@@ -264,129 +253,6 @@
                         </li>
                     </ul>
                 </div>
-
-                <!-- <form [formGroup]="candidatoForm" (submit)="guardarCandidato()">
-                    <div class="modal-body">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Nombre Completo</label>
-                                <input type="text" class="form-control" 
-                                formControlName="nombre" 
-                                [class.is-invalid]="isInvalid('nombre')">
-                                @if (isInvalid('nombre')) {
-                                    <div class="invalid-feedback">
-                                        El nombre del candidato es obligatorio
-                                    </div>
-                                }
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Foto</label>
-                                <input type="file" class="form-control" 
-                                    accept=".jpg, .jpeg, .png"
-                                    formControlName="imagenFoto"
-                                    (change)="onFileChangeCandidato($event.target.files)"
-                                    [class.is-invalid]="isInvalid('imagenFoto')"
-                                >
-                                    @if (candidatoForm.get('imagenFoto')?.errors?.['required']) {
-                                        <div>La foto es obligatoria</div>
-                                        }
-                                    @if (candidatoForm.get('imagenFoto')?.errors?.['tipo']) {
-                                        <div>Solo JPG o PNG</div>
-                                    }
-                                    @if (candidatoForm.get('imagenFoto')?.errors?.['size']) {
-                                        <div>Máximo 2MB</div>
-                                    }                                    
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Tipo de Documento</label>
-                                <select class="form-select" 
-                                formControlName="tipoDocumento"
-                                [class.is-invalid]="isInvalid('tipoDocumento')">
-                                    <option value="" selected>Seleccione</option>
-                                    <option value="DNI">DNI</option>
-                                    <option value="CE">Carnet de Extranjería</option>
-                                </select>
-                                @if(isInvalid('tipoDocumento')){
-                                    <div class="invalid-feedback">
-                                        El tipo de documento es obligatorio
-                                    </div>
-                                }
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Número de Documento</label>
-                                <input type="text" class="form-control" 
-                                formControlName="numeroDocumento"
-                                [class.is-invalid]="isInvalid('numeroDocumento')"
-                                >                                
-                                @if (isInvalid('numeroDocumento')) {
-                                <div class="invalid-feedback">
-                                    @if (candidatoForm.get('numeroDocumento')?.errors?.['required']) {
-                                    <div>El numero de documento es obligatorio</div>
-                                    }
-                                    @if (candidatoForm.get('numeroDocumento')?.errors?.['pattern']) {
-                                    <div>
-                                        @switch (candidatoForm.get('tipoDocumento')?.value) {
-                                        @case ('DNI') { DNI debe tener 8 dígitos }
-                                        @case ('CE') { CE debe tener entre 9 y 12 caracteres }
-                                        @case ('PASAPORTE') { Pasaporte entre 6 y 12 caracteres }
-                                        @default { Formato inválido }
-                                        }
-                                    </div>
-                                    }
-                                </div>
-                                }
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Área</label>
-                                <input type="text" class="form-control" 
-                                formControlName="area"
-                                [class.is-invalid]="isInvalid('area')"
-                                >
-                                @if(isInvalid('area')){
-                                    <div class="invalid-feedback">
-                                        El area es obligatorio
-                                    </div>
-                                }
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Localidad</label>
-                                <input type="text" class="form-control" 
-                                formControlName="localidad"
-                                [class.is-invalid]="isInvalid('localidad')"
-                                >
-                                @if(isInvalid('localidad')){
-                                    <div class="invalid-feedback">
-                                        La localidad es obligatorio
-                                    </div>
-                                }
-                            </div>
-                            <div class="col-md-12">
-                                <label class="form-label">Descripción</label>
-                                <textarea class="form-control" rows="3" 
-                                formControlName="descripcion"
-                                [class.is-invalid]="isInvalid('descripcion')"></textarea>
-                                @if(isInvalid('descripcion')){
-                                    <div class="invalid-feedback">
-                                        La descripción es obligatorio
-                                    </div>
-                                }
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" 
-                                class="btn btn-secondary" 
-                                data-bs-dismiss="modal">
-                            Cancelar
-                        </button>
-
-                        <button type="submit" 
-                                class="btn btn-primary">
-                            Guardar
-                        </button> 
-                    </div>
-                </form> -->
             </div>
         </div>
     </div> 

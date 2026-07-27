@@ -9,7 +9,7 @@ export interface Eleccion {
     fechaInicio: string;
     fechaFin: string;
     planilla: boolean;
-    difusion:boolean;
+    difusionEnviada:boolean;
     estado: number;
     procesos?: proceso[];
 }

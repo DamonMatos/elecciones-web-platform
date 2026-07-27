@@ -10,7 +10,7 @@ import { ColaboradorService } from '../service/colaborador.service';
 import * as XLSX from 'xlsx';
 import Swal from 'sweetalert2';
 import { BehaviorSubject } from 'rxjs';
-import { colaborador } from '../models/colaborador.model';
+import { colaborador, colaboradorRequest } from '../models/colaborador.model';
 
 @Component({
   selector: 'app-configuracion',
@@ -39,10 +39,12 @@ export class ConfiguracionComponent {
 
   listaCandidatos: candidato[] = [];
   listaColaboradores: colaborador[] = [];
-
+  listaColaboradorestemporal : colaborador[] = [];
+  colaboradormany!: colaboradorRequest;
 
   _ArchivoFoto: File | null = null;
   _FotoPreview = signal<string>('assets/images/users/user-default.jpg');
+  _validardifusion = false;
   fotoPreview: string | null = null;
 
   readonly fbcandidatos = this.FormBuilder.group({
@@ -67,6 +69,7 @@ export class ConfiguracionComponent {
   ngOnInit(): void {
     this.idProceso = Number(this.route.snapshot.paramMap.get('idProceso'));
     this.idEleccion = this.eleccionState.idEleccion();
+    this._validardifusion = (this.eleccionState.validardifusion());
     this.getCandidatos();
     this.getColaboradores();
   }
@@ -84,8 +87,7 @@ export class ConfiguracionComponent {
     this.listaCandidatos = [];
     this.candidatoService.getCandidatos(this.obtenerFiltrosConsulta()).subscribe({
         next: (response) => {
-          this.listaCandidatos = response.items; 
-          console.log('Candidatos obtenidos:', this.listaCandidatos);        
+          this.listaCandidatos = response.items;         
           this.cdr.detectChanges();
         },
         error: (err) => {
@@ -109,7 +111,6 @@ export class ConfiguracionComponent {
       this.cdr.detectChanges(); 
     };
     reader.readAsDataURL(file);
-
   }
 
   parametroCandidato(): candidato {
@@ -127,9 +128,20 @@ export class ConfiguracionComponent {
       descripcion: this.fbcandidatos.value.descripcion!,
       estado: this.fbcandidatos.value.estado!,
       fotoPreview : this.fbcandidatos.value.fotoPreview!
-    };
-    
+    };  
     return candidatoData;
+  }
+
+  nuevoCandidato(){
+    this.fbcandidatos.reset();
+    this.fbcandidatos.patchValue({
+      idEleccion: this.idEleccion,
+      idProceso: this.idProceso,
+      idCandidato: 0,
+      tipoDocumento: '0',
+      estado: 1
+    });
+    this.tipo = 1;
   }
 
   agregarCandidato() {
@@ -179,7 +191,6 @@ export class ConfiguracionComponent {
           }
       });
     }
-    this.tipo = 1; 
   }
 
   eliminarCandidato(index: number): void {
@@ -217,9 +228,6 @@ export class ConfiguracionComponent {
     });
   }
 
-
-  
-
   editarCandidato(index: number): void {
     const candidato = this.listaCandidatos[index];
     this.tipo = 2;
@@ -247,32 +255,17 @@ export class ConfiguracionComponent {
   }
 
 
-
-
-
-
-
-
-
-
   //********************Colaboradores***********************************//
-  getColaboradores(): void{
+  getColaboradores(): void {
     this.colaboradorService.getColaboradores(this.obtenerFiltrosConsulta()).subscribe({
       next: (response) => {
+          this.listaColaboradores = response.items;
           this.totalRegistros = response.totalRegistros;
           this.paginacionActual = { page: response.page, limit: response.limit };
           this.totalPaginas = response.limit > 0 ? Math.ceil(response.totalRegistros / response.limit) : 1;
-         // this.colaboradores.clear();
-
-          if (response.items && Array.isArray(response.items)) {
-            response.items.forEach((colaborador: any) => {
-              // this.colaboradores.push(this.createColaborador(colaborador));
-            });
-            this.cdr.detectChanges();
-          }
+          this.cdr.detectChanges();
       },
       error: (err) => {
-         // this.colaboradores.clear();
           this.totalRegistros = 0;
           this.totalPaginas = 0;
           this.errorCarga = err instanceof Error ? err.message : 'No se encontró resultados para la búsqueda.';
@@ -280,51 +273,12 @@ export class ConfiguracionComponent {
     });
   }
 
-  private createColaborador(colaborador: colaborador): FormGroup {
-    return this.FormBuilder.group({
-      idEleccion:       [colaborador.idEleccion ?? 0],
-      idProceso:        [colaborador.idProceso ?? 0],
-      tipoDocumento:    [colaborador.tipoDocumento ?? '', Validators.required],
-      numeroDocumento:  [colaborador.numeroDocumento ?? '', Validators.required],
-      nombre:           [colaborador.nombre ?? '', Validators.required],
-      apellidoPaterno:  [colaborador.apellidoPaterno ?? '', Validators.required],
-      apellidoMaterno:  [colaborador.apellidoMaterno ?? '', Validators.required],
-      emailDifusion:    [colaborador.emailDifusion ?? '', [Validators.required, Validators.email]],
-      cargo:            [colaborador.cargo ?? '', Validators.required],
-      sede:             [colaborador.sede ?? '', Validators.required]
-    });
-  }
-
-  // get colaboradores(): FormArray {
-  //   return this.mainForm.get('colaboradores') as FormArray;
-  // }
-
   cambiarPagina(nuevaPagina: number): void {
     if (nuevaPagina < 1 || nuevaPagina > this.totalPaginas || nuevaPagina === this.paginacionActual.page) {
       return;
     }
     this.paginacionActual.page = nuevaPagina;
     this.getColaboradores();
-  }
-
-  agregarColaborador(): void {
-    const colaborador : colaborador = {
-      idEleccion : this.idEleccion,
-      idProceso : this.idProceso,
-      tipoDocumento: "",
-      numeroDocumento: "",
-      cargo: "",
-      sede: "",
-      nombre: "",
-      apellidoPaterno: "",
-      apellidoMaterno: "",
-      emailDifusion: "",
-      idUsuario: 0,
-      estado: 0
-
-    };
-   // this.colaboradores.insert(0, this.createColaborador(colaborador));
-    this.cdr.detectChanges();
   }
 
   cargarExcel(files: FileList | null): void {
@@ -350,94 +304,61 @@ export class ConfiguracionComponent {
         return;
       }
 
-      // dataRaw.forEach(row => {
-      //   const grupo = this.createColaborador();
-      //   grupo.patchValue({
-      //     tipoDocumento:     String(row['tipoDocumento']    || ''),
-      //     numeroDocumento:   String(row['numeroDocumento']  || ''),
-      //     nombreColaborador: String(row['nombre']           || ''),
-      //     apellidoPaterno:   String(row['apellidoPaterno']  || ''),
-      //     apellidoMaterno:   String(row['apellidoMaterno']  || ''),
-      //     correo:            String(row['correo']           || ''),
-      //     cargo:             String(row['cargo']            || ''),
-      //     sede:              String(row['sede']             || '')
-      //   });
+      dataRaw.forEach(row => {
+        const colaborador : colaborador = {
+          idEleccion: this.idEleccion,
+          idProceso: this.idProceso,
+          tipoDocumento:     String(row['tipoDocumento']    || ''),
+          numeroDocumento:   String(row['numeroDocumento']  || ''),
+          cargo:             String(row['cargo']            || ''),
+          sede:              String(row['sede']             || ''),
+          nombre:            String(row['nombre']           || ''),
+          apellidoPaterno:   String(row['apellidoPaterno']  || ''),
+          apellidoMaterno:   String(row['apellidoMaterno']  || ''),
+          emailDifusion:     String(row['correo']           || ''),
+          estado: 1
+        };
 
-      //this.colaboradores.push(grupo);
-      //this.cdr.detectChanges();
-      // });
-
-      // Swal.fire({
-      //             title: "Registro exitoso",
-      //             text: `Se cargaron ${dataRaw.length} colaboradores correctamente.`,
-      //             icon: "success",
-      //             draggable: true
-      //           });
-
+      this.listaColaboradorestemporal.push(colaborador);
+      this.cdr.detectChanges();
+      });    
     };
-
+    
     reader.readAsBinaryString(file);
   }
 
   eliminarColaborador(i: number): void {
-    //this.colaboradores.removeAt(i);
+    this.listaColaboradorestemporal.splice(i, 1);
+    this.cdr.detectChanges();
   }
 
-  guardar(): void {
-    // Swal.fire({
-    //   title: "Guardar Proceso de Elección?",
-    //   text: "¿Confirma que desea guardar los cambios realizados en el proceso de elección?",
-    //   icon: "question",
-    //   showCancelButton: true,
-    //   confirmButtonText: "Sí, guardar",
-    //   cancelButtonText: "Cancelar",
-    //   draggable: true
-    //   }).then((result) => {
-    //       if (result.isConfirmed) {
-    //         // Aquí iría la lógica para enviar los datos al backend, por ejemplo:
-
-    //         Swal.fire({
-    //           title: "Proceso de Elección guardado",
-    //           text: "Los cambios han sido guardados correctamente.",
-    //           icon: "success",
-    //           draggable: true
-    //         });
-    //       }
-    //   });
-
-    // if (this.candidatoForm.invalid) {
-    //   this.candidatoForm.markAllAsTouched();
-    //   return;
-    // }
-
-    // const candidatoData = this.candidatoForm.value;
-    // if (this.editIndex !== null) {
-    //   this.candidatos.at(this.editIndex).patchValue(candidatoData);
-    // }
-    // else {
-    //   this.candidatos.push(this.createCandidato());
-    //   this.candidatos.at(this.candidatos.length - 1).patchValue(candidatoData);
-    // }
-
-    // const modal = document.getElementById('candidatoModal');
-    // const instance = (window as any).bootstrap.Modal.getInstance(modal);
-    // instance?.hide();
-    //console.log(this.mainForm.value);
-
+  guardarColaboradores(): void {
+    this.colaboradormany = { colaboradores: this.listaColaboradorestemporal };
+    this.colaboradorService.createMany(this.colaboradormany).subscribe({
+      next: (response) => {
+        Swal.fire({
+          title: "Colaboradores guardados",
+          text: response.length > 0 ? `${response.length} colaboradores han sido guardados correctamente.` : "No se guardaron colaboradores.",
+          icon: "success",
+          draggable: true
+        });
+        this.listaColaboradorestemporal = [];
+        this.getColaboradores();
+      },
+      error: (err) => {
+        Swal.fire({
+          title: "Error al guardar colaboradores",
+          text: err instanceof Error ? err.message : "Ocurrió un error al guardar los colaboradores.",
+          icon: "error",
+          draggable: true
+        });
+      }
+    });
   }
 
-    // const ListaCandidatos: candidato[] = this.candidatos.controls.map(ctrl => ({
-    //     ideleccion:          0,
-    //     idproceso:           ctrl.value.idproceso || 0,
-    //     idcandidato:         ctrl.value.idcandidato || 0,
-    //     tipoDocumento: ctrl.value.tipoDocumento!,
-    //     numeroDocumento: ctrl.value.numeroDocumento!,
-    //     nombre: ctrl.value.nombre!,
-    //     area: ctrl.value.area!,
-    //     localidad: ctrl.value.localidad!,
-    //     foto: ctrl.value.numeroDocumento! + ".jpg",
-    //     imagenFoto: ctrl.value.imagenFoto!,
-    //     estado: 1,
-    //     descripcion: ctrl.value.descripcion!
-    //   }));
+  cancelarCargaColaboradores(): void {
+    this.listaColaboradorestemporal = [];
+    this.cdr.detectChanges();
+  }
+  
 }

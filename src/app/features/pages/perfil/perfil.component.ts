@@ -23,6 +23,7 @@ export class PerfilComponent{
 
   idUsuario  : number = 0;
   idPersonal : number = 0;
+  habilitarCampos: boolean = false;
 
   readonly fb = this.Formbuilder.group({
     nombre : [''],
@@ -52,6 +53,9 @@ export class PerfilComponent{
     this.idPersonal = _usuario?.idPersonal || 0;
 
     if(_usuario){
+      if(_usuario.fehNacPer === null || _usuario.fehNacPer === 'null' || _usuario.fehNacPer === ''){
+        _usuario.fehNacPer = '01/01/2000';
+      }      
         this.fb.patchValue({
           nombre: _usuario.nomPer == "Nuevo Usuario" ? '' : _usuario.nomPer,
           apellidoPaterno: _usuario.apePatPer,
@@ -60,8 +64,10 @@ export class PerfilComponent{
           tipoDocumento: _usuario.tipDocPer,
           numeroDocumento: _usuario.numDocPer
       });
-      this.getCliente(_usuario.idPersonal);
-
+      if(_usuario.idPerfil !== 2){
+        this.getCliente(_usuario.idPersonal);
+        this.habilitarCampos = true;
+      }     
     }
   }
 

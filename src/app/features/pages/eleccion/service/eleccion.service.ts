@@ -41,7 +41,7 @@ export class EleccionService extends ApiService{
         formData.append('FechaInicio', request.fechaInicio ?? '');
         formData.append('FechaFin', request.fechaFin ?? '');
         formData.append('PlanillaConfirmada', request.planilla.toString() ?? '0');
-        formData.append('DifusionEnviada', request.difusion.toString() ?? '0');
+        formData.append('DifusionEnviada', request.difusionEnviada.toString() ?? '0');
         formData.append('Estado', (request.estado ?? 0).toString());
         formData.append('Procesos', JSON.stringify(request.procesos ?? [])); 
   
@@ -57,5 +57,36 @@ export class EleccionService extends ApiService{
         .pipe(
           map((response: ApiResponse<any>) => response.data!)
       ); 
+    }
+
+
+    //Generar Difusion
+    // difusion(idEleccion: number): Observable<any> 
+    // {
+    //   //const params = normalizeQueryParams({ IdEleccion:idEleccion });  
+    //   return this.post<any, ApiResponse<any>>({ IdEleccion: idEleccion }, 'generarDifusion')
+    //     .pipe(
+    //       map((response: ApiResponse<any>) => response.data!)
+    //   ); 
+    // } 
+
+
+    difusion(idEleccion: number): Observable<any> 
+    {
+      const params = new HttpParams()
+      .set('IdEleccion', idEleccion.toString());
+
+      return this.post<any, ApiResponse<any>>({}, `generarDifusion?${params.toString()}`)
+      .pipe(
+        map((response: ApiResponse<any>) => response.data!)
+      );
+
+      // const params = normalizeQueryParams({ IdEleccion: idEleccion });
+      // // 2. Enviamos el post. Si tu método base post permite pasar el body nulo/vacío 
+      // // y los params al final (o concatenados en la URL de 'generarDifusion')
+      // return this.post<any, ApiResponse<any>>({}, `generarDifusion?${params}`)
+      //   .pipe(
+      //     map((response: ApiResponse<any>) => response.data!)
+      //   ); 
     }
 }
