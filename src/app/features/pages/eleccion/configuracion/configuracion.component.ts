@@ -308,8 +308,8 @@ export class ConfiguracionComponent {
         const colaborador : colaborador = {
           idEleccion: this.idEleccion,
           idProceso: this.idProceso,
-          tipoDocumento:     String(row['tipoDocumento']    || ''),
-          numeroDocumento:   String(row['numeroDocumento']  || ''),
+          tipoDocumento:     String(row['tipo']    || ''),
+          numeroDocumento:   String(row['documento']  || ''),
           cargo:             String(row['cargo']            || ''),
           sede:              String(row['sede']             || ''),
           nombre:            String(row['nombre']           || ''),

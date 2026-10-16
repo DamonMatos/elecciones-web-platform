@@ -33,7 +33,16 @@
                   </small>
 
                   <div class="d-grid">
-                    <button class="btn btn-primary">Ingresar</button>
+                    <button class="btn btn-primary">
+                      @if (cargando) {
+                        <span
+                            class="spinner-border spinner-border-sm me-2" 
+                            role="status" 
+                            aria-hidden="true">
+                        </span>
+                      }
+                        {{ cargando ? 'Iniciando sesión...' : 'Ingresar' }}                                      
+                    </button>
                   </div>
 
                   <div class="text-center mt-3">
